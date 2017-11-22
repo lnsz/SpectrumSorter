@@ -1,12 +1,25 @@
 #include <iostream>
+#include <algorithm>
+#include <string>
 #include "View.h"
 
-int main(int argc, char** argv) {
-	View view;
-	view.run();
+using namespace std;
 
-	std::cout << "Enter any key to quit...";
-	int a;
-	std::cin >> a;
+int main(int argc, char** argv) {
+	//enum Algorithm {BUBBLE, INSERTION, SELECTION, MERGE, QUICK};
+	//Algorithm algorithm;
+	View view;
+	view.start();
+
+	if (argc != 2)
+	{
+		cout << "Usage: ./program_name [sorting_algorithm]";
+		return 0;
+	}
+
+	string algorithm = argv[1];
+	transform(algorithm.begin(), algorithm.end(), algorithm.begin(), ::tolower);
+	cout << algorithm << endl;
+
 	return 0;
 }

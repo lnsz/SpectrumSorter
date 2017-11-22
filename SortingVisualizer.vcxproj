@@ -71,10 +71,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Helpers.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Helpers.h" />
     <ClInclude Include="src\View.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
