@@ -71,12 +71,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Errors.cpp" />
+    <ClCompile Include="src\GLSLProgram.cpp" />
     <ClCompile Include="src\Helpers.cpp" />
+    <ClCompile Include="src\List.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\View.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Errors.h" />
+    <ClInclude Include="src\GLSLProgram.h" />
     <ClInclude Include="src\Helpers.h" />
+    <ClInclude Include="src\List.h" />
+    <ClInclude Include="src\Vertex.h" />
     <ClInclude Include="src\View.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

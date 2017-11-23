@@ -1,16 +1,13 @@
 #include "View.h"
 #include "Helpers.h"
+#include "List.h"
+#include "Errors.h"
+#include <time.h>
 #include <string>
 #include <iostream>
+#include <algorithm>
+#include <random>
 #include <vector>
-
-void fatalError(std::string errorString) {
-	std::cout << errorString << std::endl;
-	std::cout << "Enter any key to quit...";
-	int tmp;
-	std::cin >> tmp;
-	SDL_Quit();
-}
 
 View::View() {
 	_window = nullptr;
@@ -23,12 +20,12 @@ View::~View()
 {
 }
 
-void View::start() {
-	init();
+void View::init() {
+	create();
 	run();
 }
 
-void View::init() {
+void View::create() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
 	_window = SDL_CreateWindow("Sorting Visualizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
@@ -37,6 +34,7 @@ void View::init() {
 		fatalError("SDL Window could not be created");
 	}
 
+	glewExperimental = true;
 	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
 	if (glContext == nullptr) {
 		fatalError("SDL_GL context could not be created");
@@ -53,14 +51,15 @@ void View::init() {
 
 	glOrtho(0, _screenWidth, 0, _screenHeight, -1, 1);
 
-	for (int y = 0; y < _screenHeight; y++) {
-		std::vector<int> temp;
-		for (int x = 0; x < _screenWidth; x++) {
-			temp.push_back(x);
-			//std::vector<int> colour = int2colour(x);
-			//std::cout << colour[0] << ", " << colour[1] << ", " << colour[2] << std::endl;
-		}
-		_lists.push_back(temp);
+	_shaders.compileShaders("C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.vert", "C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.frag");
+	_shaders.addAttribute("vertexPosition");
+	_shaders.addAttribute("vertexColour");
+	_shaders.linkShaders();
+
+	for (int i = 0; i < _screenHeight; i++) {
+		_lists.push_back(List());
+		_lists[i].init(i, _screenWidth, _screenHeight);
+		//_lists[i].shuffle();
 	}
 }
 
@@ -88,19 +87,17 @@ void View::processInput() {
 }
 
 void View::render() {
+	clock_t t1, t2;
+	t1 = clock();
 	glClearDepth(1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glEnableClientState(GL_COLOR_ARRAY);
-
-	for (int y = 0; y < _lists.size(); y++) {
-		for (int x = 0; x < _lists[y].size(); x++) {
-			glBegin(GL_POINTS);
-			std::vector<int> colour = int2colour(_lists[y][x]);
-			glColor3ub(colour[0], colour[1], colour[2]);
-			glVertex2f(x, y);
-			glEnd();
-		}
+	
+	_shaders.use();
+	for (int i = 0; i < _lists.size(); i++) {
+		_lists[i].draw();
 	}
+	_shaders.unuse();
 	SDL_GL_SwapWindow(_window);
+	t2 = clock();
+	//std::cout << "draw: " << t2 - t1 << std::endl;
 }

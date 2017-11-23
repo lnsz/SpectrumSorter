@@ -9,7 +9,7 @@ int main(int argc, char** argv) {
 	//enum Algorithm {BUBBLE, INSERTION, SELECTION, MERGE, QUICK};
 	//Algorithm algorithm;
 	View view;
-	view.start();
+	view.init();
 
 	if (argc != 2)
 	{

@@ -18,6 +18,7 @@ std::vector<int> int2colour(int x) {
 		blue = x - 255;
 	}
 	else if (x <= 765) {
+	//else if (x <= 640) {
 		red = x - 510;
 		green = 0;
 		blue = 765 - x;

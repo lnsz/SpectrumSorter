@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <vector>
 #include <iostream>
+#include "List.h"
+#include "GLSLProgram.h"
 
 enum class State {RUN, EXIT};
 
@@ -12,17 +14,18 @@ class View
 public:
 	View();
 	~View();
-	void start();
+	void init();
 
 private:
 	void run();
-	void init();
+	void create();
 	void render();
 	void processInput();
 	SDL_Window* _window;
 	State _state;
 	int _screenWidth;
 	int _screenHeight;
-	std::vector< std::vector<int> > _lists;
+	std::vector< List > _lists;
+	GLSLProgram _shaders;
 };
 

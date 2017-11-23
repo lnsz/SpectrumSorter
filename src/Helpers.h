@@ -2,4 +2,4 @@
 #include <vector>
 #include <iostream>
 
-std::vector<int> int2colour(int x);
+extern std::vector<int> int2colour(int x);
