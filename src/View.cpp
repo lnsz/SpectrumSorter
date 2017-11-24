@@ -11,11 +11,13 @@
 #include <vector>
 #include <functional>
 #include <future>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 View::View() {
 	_window = nullptr;
-	_screenWidth = 255;
-	_screenHeight = 300;
+	_screenWidth = 0;
+	_screenHeight = 0;
 	_algorithm = "";
 }
 
@@ -32,7 +34,9 @@ void View::init(std::string algorithm) {
 void View::create() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	_window = SDL_CreateWindow("Sorting Visualizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screenWidth, _screenHeight, SDL_WINDOW_OPENGL);
+	_window = SDL_CreateWindow("Sorting Visualizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+	SDL_GetWindowSize(_window, &_screenWidth, &_screenHeight);
+	_orthoMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
 
 	if (_window == nullptr) {
 		fatalError("SDL Window could not be created");
@@ -58,8 +62,6 @@ void View::create() {
 	_shaders.addAttribute("vertexPosition");
 	_shaders.addAttribute("vertexColour");
 	_shaders.linkShaders();
-
-	//glOrtho(0, _screenWidth, 0, _screenHeight, -1, 1);
 
 	for (int i = 0; i < _screenHeight; i++) {
 		_lists.push_back(List());
@@ -102,6 +104,10 @@ void View::render() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	_shaders.use();
+	GLint pLocation = _shaders.getUniformLocation("P");
+
+	glUniformMatrix4fv(pLocation, 1, GL_FALSE, &(_orthoMatrix[0][0]));
+
 	for (int i = 0; i < _lists.size(); i++) {
 		_lists[i].draw();
 	}

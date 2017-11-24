@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <GL/glew.h>
+#include "View.h"
 
 using namespace std;
 
@@ -8,7 +9,7 @@ std::vector<float> int2colour(float x) {
 	float red;
 	float green;
 	float blue;
-	float size = 255.0f;
+	float size = (float)width;
 	if (x <= size / 3.0f) {
 		red = size / 3.0f - x;
 		green = x;
@@ -32,7 +33,6 @@ std::vector<float> int2colour(float x) {
 	red *= 765.0f / size;
 	green *= 765.0f / size;
 	blue *= 765.0f / size;
-
 	std::vector<float> colours;
 	colours.push_back(red);
 	colours.push_back(green);

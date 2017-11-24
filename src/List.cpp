@@ -29,12 +29,17 @@ void List::init(int y, int width, int height) {
 	}
 	_vertexData = new Vertex[_size];
 	update();
+
+	if (_vboID == 0) {
+		glGenBuffers(1, &_vboID);
+	}
+
 }
 
 void List::update() {
 	for (int i = 0; i < _size; i++) {
-		_vertexData[i].position.x = (float)(-1.0 + (float)i / (float)_size * 2.0);
-		_vertexData[i].position.y = (float)(-1.0 + (float)_y / (float)_height * 2.0);
+		_vertexData[i].position.x = (float)i + 0.5f;
+		_vertexData[i].position.y = (float)_y + 0.5f;
 		std::vector<float> colour = int2colour((float)elements[i]);
 		_vertexData[i].colour.r = (GLubyte)colour[0];
 		_vertexData[i].colour.g = (GLubyte)colour[1];
@@ -45,8 +50,8 @@ void List::update() {
 }
 
 void List::updateItem(int index) {
-	_vertexData[index].position.x = (float)(-1.0 + (float)index / (float)_size * 2.0);
-	_vertexData[index].position.y = (float)(-1.0 + (float)_y / (float)_height * 2.0);
+	_vertexData[index].position.x = (float)index + 0.5f;
+	_vertexData[index].position.y = (float)_y + 0.5f;
 	std::vector<float> colour = int2colour((float)elements[index]);
 	_vertexData[index].colour.r = (GLubyte)colour[0];
 	_vertexData[index].colour.g = (GLubyte)colour[1];
@@ -55,10 +60,6 @@ void List::updateItem(int index) {
 }
 
 void List::draw() {
-
-	if (_vboID == 0) {
-		glGenBuffers(1, &_vboID);
-	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
