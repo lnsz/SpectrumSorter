@@ -7,25 +7,25 @@
 #include "List.h"
 #include "GLSLProgram.h"
 
-enum class State {RUN, EXIT};
+class List;
 
 class View
 {
 public:
 	View();
 	~View();
-	void init();
+	void init(std::string algorithm);
+	void render();
+	void processInput();
 
 private:
 	void run();
 	void create();
-	void render();
-	void processInput();
 	SDL_Window* _window;
-	State _state;
 	int _screenWidth;
 	int _screenHeight;
 	std::vector< List > _lists;
 	GLSLProgram _shaders;
+	std::string _algorithm;
 };
 

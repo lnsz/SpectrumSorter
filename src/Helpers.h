@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
 #include <iostream>
+#include <GL/glew.h>
 
-extern std::vector<int> int2colour(int x);
+extern std::vector<float> int2colour(float x);

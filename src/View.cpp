@@ -2,25 +2,29 @@
 #include "Helpers.h"
 #include "List.h"
 #include "Errors.h"
+#include "SortingAlgorithms.h"
 #include <time.h>
 #include <string>
 #include <iostream>
 #include <algorithm>
 #include <random>
 #include <vector>
+#include <functional>
+#include <future>
 
 View::View() {
 	_window = nullptr;
-	_screenWidth = 765;
+	_screenWidth = 255;
 	_screenHeight = 300;
-	_state = State::RUN;
+	_algorithm = "";
 }
 
 View::~View()
 {
 }
 
-void View::init() {
+void View::init(std::string algorithm) {
+	_algorithm = algorithm;
 	create();
 	run();
 }
@@ -47,26 +51,31 @@ void View::create() {
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	glClearColor(0, 0, 255, 1.0);
+	glClearColor(0, 0, 0, 1.0);
 
-	glOrtho(0, _screenWidth, 0, _screenHeight, -1, 1);
 
 	_shaders.compileShaders("C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.vert", "C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.frag");
 	_shaders.addAttribute("vertexPosition");
 	_shaders.addAttribute("vertexColour");
 	_shaders.linkShaders();
 
+	//glOrtho(0, _screenWidth, 0, _screenHeight, -1, 1);
+
 	for (int i = 0; i < _screenHeight; i++) {
 		_lists.push_back(List());
 		_lists[i].init(i, _screenWidth, _screenHeight);
-		//_lists[i].shuffle();
+		_lists[i].shuffle();
 	}
 }
 
 void View::run() {
-	while (_state != State::EXIT) {
+	clock_t t1, t2;
+	t1 = clock();
+	bubbleSort(_lists, this);
+	t2 = clock();
+	std::cout << "Finished in " << (t2 - t1) / 1000.0 << " seconds" << std::endl;
+	while (true) {
 		processInput();
-		render();
 	}
 }
 
@@ -76,7 +85,7 @@ void View::processInput() {
 	{
 		switch (evnt.type) {
 			case SDL_QUIT:
-				_state = State::EXIT;
+				exit(0);
 				break;
 			case SDL_MOUSEMOTION:
 				// std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;

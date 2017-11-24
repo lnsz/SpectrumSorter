@@ -5,6 +5,7 @@
 #include <random>
 #include "Vertex.h"
 #include <cstddef>
+#include "SortingAlgorithms.h"
 auto rng = std::default_random_engine{};
 
 List::List() : _y(0), _size(0), _vboID(0)
@@ -24,23 +25,33 @@ void List::init(int y, int width, int height) {
 	_height = height;
 
 	for (int i = 0; i < _size; i++) {
-		_list.push_back(i);
+		elements.push_back(i);
 	}
-
+	_vertexData = new Vertex[_size];
 	update();
 }
 
 void List::update() {
-	_vertexData = new Vertex[_size];
 	for (int i = 0; i < _size; i++) {
-		_vertexData[i].position.x = -1 + (float)i / (float)_size * 2;
-		_vertexData[i].position.y = -1 + (float)_y / (float)_height * 2;
-		std::vector<int> colour = int2colour(_list[i]);
-		_vertexData[i].colour.r = colour[0];
-		_vertexData[i].colour.g = colour[1];
-		_vertexData[i].colour.b = colour[2];
+		_vertexData[i].position.x = (float)(-1.0 + (float)i / (float)_size * 2.0);
+		_vertexData[i].position.y = (float)(-1.0 + (float)_y / (float)_height * 2.0);
+		std::vector<float> colour = int2colour((float)elements[i]);
+		_vertexData[i].colour.r = (GLubyte)colour[0];
+		_vertexData[i].colour.g = (GLubyte)colour[1];
+		_vertexData[i].colour.b = (GLubyte)colour[2];
 		_vertexData[i].colour.a = 255;
+		//std::cout << _vertexData[i].position.y << " " << _vertexData[i].position.x << " " << colour[0] << " " << colour[1] << " " << colour[2] << std::endl;
 	}
+}
+
+void List::updateItem(int index) {
+	_vertexData[index].position.x = (float)(-1.0 + (float)index / (float)_size * 2.0);
+	_vertexData[index].position.y = (float)(-1.0 + (float)_y / (float)_height * 2.0);
+	std::vector<float> colour = int2colour((float)elements[index]);
+	_vertexData[index].colour.r = (GLubyte)colour[0];
+	_vertexData[index].colour.g = (GLubyte)colour[1];
+	_vertexData[index].colour.b = (GLubyte)colour[2];
+	_vertexData[index].colour.a = 255;
 }
 
 void List::draw() {
@@ -52,9 +63,6 @@ void List::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
 	glBufferData(GL_ARRAY_BUFFER, sizeof(*_vertexData) * _size, _vertexData, GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, _vboID);
 
 	glEnableVertexAttribArray(0);
 
@@ -69,11 +77,7 @@ void List::draw() {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void List::sort() {
-	std::sort(std::begin(_list), std::end(_list));
-}
-
 void List::shuffle() {
-	std::shuffle(std::begin(_list), std::end(_list), rng);
+	std::shuffle(std::begin(elements), std::end(elements), rng);
 	update();
 }

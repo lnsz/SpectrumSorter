@@ -4,7 +4,11 @@
 #include <GL/glew.h>
 #include <vector>
 #include <iostream>
+#include <functional>
 #include "Vertex.h"
+#include "View.h"
+
+class View;
 
 class List
 {
@@ -14,16 +18,19 @@ public:
 
 	void draw();
 	void init(int y, int width, int height);
-	void sort();
 	void shuffle();
 	void update();
+	void updateItem(int index);
+	int _y;
+	std::vector<int> elements;
 
 private:
 	Vertex* _vertexData;
+	std::string _algorithm;
+	View* _view;
 	int _numVertices;
-	int _y;
+	
 	int _size;
 	int _height;
-	std::vector<int> _list;
 	GLuint _vboID;
 };

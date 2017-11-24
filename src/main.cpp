@@ -8,9 +8,6 @@ using namespace std;
 int main(int argc, char** argv) {
 	//enum Algorithm {BUBBLE, INSERTION, SELECTION, MERGE, QUICK};
 	//Algorithm algorithm;
-	View view;
-	view.init();
-
 	if (argc != 2)
 	{
 		cout << "Usage: ./program_name [sorting_algorithm]";
@@ -20,6 +17,8 @@ int main(int argc, char** argv) {
 	string algorithm = argv[1];
 	transform(algorithm.begin(), algorithm.end(), algorithm.begin(), ::tolower);
 	cout << algorithm << endl;
+	View view;
+	view.init(algorithm);
 
 	return 0;
 }
