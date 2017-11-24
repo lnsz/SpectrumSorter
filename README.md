@@ -5,9 +5,12 @@ A way to visualize sorting algorithms by using a colour spectrum
 ## Usage
 
 Compile solution file with Visual Studio
+
 Go to the output folder (./x64/Debug/)
+
 Run from command line:
-  ./SpectrumSorter.exe [sorting_algorithm]
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;./SpectrumSorter.exe [sorting_algorithm]
 
 ## Algorithms
 ### Bubble Sort (bubble)
