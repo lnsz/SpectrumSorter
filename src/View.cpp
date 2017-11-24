@@ -34,7 +34,7 @@ void View::init(std::string algorithm) {
 void View::create() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	_window = SDL_CreateWindow("Sorting Visualizer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+	_window = SDL_CreateWindow("Spectrum Sorter", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 	SDL_GetWindowSize(_window, &_screenWidth, &_screenHeight);
 	_orthoMatrix = glm::ortho(0.0f, (float)_screenWidth, 0.0f, (float)_screenHeight);
 
@@ -57,8 +57,7 @@ void View::create() {
 
 	glClearColor(0, 0, 0, 1.0);
 
-
-	_shaders.compileShaders("C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.vert", "C:\\Users\\lucas\\Documents\\GitHub\\SortingVisualizer\\src\\Shaders\\colourShader.frag");
+	_shaders.compileShaders("..\\..\\src\\Shaders\\colourShader.vert", "..\\..\\src\\Shaders\\colourShader.frag");
 	_shaders.addAttribute("vertexPosition");
 	_shaders.addAttribute("vertexColour");
 	_shaders.linkShaders();
@@ -73,7 +72,24 @@ void View::create() {
 void View::run() {
 	clock_t t1, t2;
 	t1 = clock();
-	bubbleSort(_lists, this);
+	if (_algorithm == "bubble") {
+		bubbleSort(_lists, this);
+	}
+	else if (_algorithm == "insertion") {
+		insertionSort(_lists, this);
+	}
+	else if (_algorithm == "selection") {
+		selectionSort(_lists, this);
+	}
+	else if (_algorithm == "quicksort") {
+		std::vector<int> low;
+		std::vector<int> high;
+		for (int i = 0; i < _screenWidth; i++) {
+			low.push_back(0);
+			high.push_back(_screenWidth - 1);
+		}
+		quickSort(_lists, this, low, high);
+	}
 	t2 = clock();
 	std::cout << "Finished in " << (t2 - t1) / 1000.0 << " seconds" << std::endl;
 	while (true) {
@@ -114,5 +130,4 @@ void View::render() {
 	_shaders.unuse();
 	SDL_GL_SwapWindow(_window);
 	t2 = clock();
-	//std::cout << "draw: " << t2 - t1 << std::endl;
 }

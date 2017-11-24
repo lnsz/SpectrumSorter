@@ -10,8 +10,8 @@
 
 class List;
 
-const int width = 300;
-const int height = 300;
+const int width = 200;
+const int height = 200;
 
 class View
 {
