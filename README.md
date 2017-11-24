@@ -11,13 +11,13 @@ Run from command line:
 
 ## Algorithms
 ### Bubble Sort (bubble)
-![Alt text](https://i.imgur.com/2d5MX2v.gifv)
+![Alt text](https://i.imgur.com/2d5MX2v.gif)
 
 ### Insertion Sort (insertion)
-![Alt text](https://i.imgur.com/1VvU5yD.gifv)
+![Alt text](https://i.imgur.com/1VvU5yD.gif)
 
 ### Selection Sort (selection)
-![Alt text](https://i.imgur.com/k7hYuxb.gifv)
+![Alt text](https://i.imgur.com/k7hYuxb.gif)
 
 ### Quicksort (quicksort)
 #### Coming Soon
