@@ -23,7 +23,7 @@ Run from command line:
 ![Alt text](https://i.imgur.com/k7hYuxb.gif)
 
 ### Quicksort (quicksort)
-#### Coming Soon
+![Alt text](https://i.imgur.com/QCH9GWC.gif)
 
 ### Merge Sort (merge)
 #### Coming Soon
