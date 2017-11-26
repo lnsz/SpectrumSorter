@@ -74,7 +74,7 @@ std::vector<int> partition(std::vector<List> &lists, View* view, std::vector<int
 	std::vector<int> i;
 	for (int l = 0; l < lists.size(); l++) {
 		i.push_back(low[l] - 1);
-		std::cout << l << " " << low[l] << " " << high[l] << std::endl;
+		//std::cout << l << " " << low[l] << " " << high[l] << std::endl;
 		if (low[l] < high[l]) {
 			pivots.push_back(lists[l].elements[high[l]]);
 			for (int j = low[l]; j < high[l]; j++) {
@@ -94,8 +94,17 @@ std::vector<int> partition(std::vector<List> &lists, View* view, std::vector<int
 	return i;
 }
 
+bool lessThan(std::vector<int> low, std::vector<int> high) {
+	for (int i = 0; i < low.size(); i++) {
+		if (low[i] < high[i]){
+			return true;
+		}
+	}
+	return false;
+}
+
 void quickSort(std::vector<List> &lists, View* view, std::vector<int> low, std::vector<int> high) {
-	if (low < high) {
+	if (lessThan(low, high)) {
 		std::vector<int> p = partition(lists, view, low, high);
 		quickSort(lists, view,  low, p);
 		quickSort(lists, view, copyAndAdd(p, 2), high);
